@@ -2,7 +2,6 @@ package my.demo;
 
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -27,7 +26,7 @@ import javax.ws.rs.core.MediaType;
 public class PersonService {
 
     private Map<Long, Person> people = new HashMap<>();
-    
+
     @GET
     public Collection<Person> getAllPeople() {
         return people.values();
