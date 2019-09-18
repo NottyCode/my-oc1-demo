@@ -2,7 +2,6 @@ package my.demo.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Collection;
@@ -49,14 +48,5 @@ public class PersonServiceIT {
         assertTrue(allPeople.size() >= 2, "Expected at least 2 people to be registered, but there were only: " + allPeople);
         assertTrue(allPeople.contains(expected1), "Did not find person " + expected1 + " in all people: " + allPeople);
         assertTrue(allPeople.contains(expected2), "Did not find person " + expected2 + " in all people: " + allPeople);
-    }
-
-    @Test
-    public void testDelete() {
-        long deletablePerson = personSvc.createPerson("DeletablePerson", 5);
-
-        personSvc.removePerson(deletablePerson);
-
-        assertNull(personSvc.getPerson(deletablePerson), "DeletablePerson should not exist");
     }
 }

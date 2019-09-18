@@ -10,7 +10,6 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.PositiveOrZero;
 import javax.validation.constraints.Size;
 import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -52,11 +51,5 @@ public class PersonService {
     @Path("/{personId}")
     public void updatePerson(@PathParam("personId") long id, @Valid Person p) {
         people.put(id, p);
-    }
-
-    @DELETE
-    @Path("/{personId}")
-    public void removePerson(@PathParam("personId") long id) {
-        people.remove(id);
     }
 }
