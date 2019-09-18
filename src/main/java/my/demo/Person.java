@@ -14,27 +14,28 @@ public class Person {
     private static final Random r = new Random();
 
     @NotNull
-    public final long id;
+    public long id;
 
     @NotNull
     @Size(min = 2, max = 50)
-    public final String name;
+    public String name;
 
     @NotNull
     @PositiveOrZero
-    public final int age;
+    public int age;
 
     public Person(String name, int age) {
-        this(name, age, null);
+        this.name = name;
+        this.age = age;
+        this.id = r.nextLong();
     }
 
     @JsonbCreator
     public Person(@JsonbProperty("name") String name,
             @JsonbProperty("age") int age,
-            @JsonbProperty("id") Long id) {
-        this.name = name;
-        this.age = age;
-        this.id = id == null ? r.nextLong() : id;
+            @JsonbProperty("id") long id) {
+        this(name, age);
+        this.id = id;
     }
 
     @Override
