@@ -9,7 +9,6 @@ import java.util.Collection;
 
 import javax.inject.Inject;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.microshed.testing.jupiter.MicroShedTest;
 import org.microshed.testing.testcontainers.MicroProfileApplication;
@@ -33,6 +32,7 @@ public class PersonServiceIT {
     @Container
     public static MicroProfileApplication app = new MicroProfileApplication()
                     .withAppContextRoot("/")
+                    .withReadinessPath("/people")
                     .withEnv("PG_HOST", "postgres")
                     .withEnv("PG_PORT", "" + PostgreSQLContainer.POSTGRESQL_PORT)
                     .withEnv("PG_USER", db.getUsername())

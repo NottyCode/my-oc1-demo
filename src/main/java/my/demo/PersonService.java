@@ -1,9 +1,7 @@
 package my.demo;
 
 import java.util.Collection;
-import java.util.Collections;
 
-import javax.annotation.Resource;
 import javax.enterprise.context.ApplicationScoped;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;

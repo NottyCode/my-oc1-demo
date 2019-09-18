@@ -1,7 +1,6 @@
 package my.demo;
 
 import java.util.Objects;
-import java.util.Random;
 
 import javax.json.bind.annotation.JsonbCreator;
 import javax.json.bind.annotation.JsonbProperty;
