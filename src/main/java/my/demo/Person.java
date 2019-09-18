@@ -27,16 +27,17 @@ public class Person {
     public Person() {}
 
     public Person(String name, int age) {
-        this(name, age, null);
+        this.name = name;
+        this.age = age;
+        id = r.nextLong();
     }
 
     @JsonbCreator
     public Person(@JsonbProperty("name") String name,
             @JsonbProperty("age") int age,
-            @JsonbProperty("id") Long id) {
-        this.name = name;
-        this.age = age;
-        this.id = id == null ? r.nextLong() : id;
+            @JsonbProperty("id") long id) {
+        this(name, age);
+        this.id = id;
     }
 
     @Override
