@@ -12,6 +12,7 @@ import javax.inject.Inject;
 import org.junit.jupiter.api.Test;
 import org.microshed.testing.jupiter.MicroShedTest;
 import org.microshed.testing.testcontainers.MicroProfileApplication;
+import org.testcontainers.containers.wait.strategy.WaitStrategy;
 import org.testcontainers.junit.jupiter.Container;
 
 import my.demo.Person;
@@ -22,8 +23,9 @@ public class PersonServiceIT {
     
     @Container
     public static MicroProfileApplication app = new MicroProfileApplication()
-                    .withAppContextRoot("/");
-    
+                    .withAppContextRoot("/")
+                    .withReadinessPath("/people");
+
     @Inject
     public static PersonService personSvc;
     
