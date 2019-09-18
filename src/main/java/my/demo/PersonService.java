@@ -1,10 +1,14 @@
 package my.demo;
 
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Collections;
 
+import javax.annotation.Resource;
 import javax.enterprise.context.ApplicationScoped;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.transaction.Transactional;
+import javax.transaction.Transactional.TxType;
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.PositiveOrZero;
@@ -23,40 +27,40 @@ import javax.ws.rs.core.MediaType;
 @ApplicationScoped
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
+@Transactional(TxType.REQUIRED)
 public class PersonService {
 
-    private Map<Long, Person> people = new HashMap<>();
+    @PersistenceContext(unitName = "my-demo-unit")
+    private EntityManager em;
 
     @GET
     public Collection<Person> getAllPeople() {
-        return people.values();
+        return em.createQuery("SELECT p FROM Person p", Person.class).getResultList();
     }
 
     @GET
     @Path("/{personId}")
     public Person getPerson(@PathParam("personId") long id) {
-        return people.get(id);
+        return em.find(Person.class, id);
     }
 
     @POST
     public Long createPerson(@QueryParam("name") @NotEmpty @Size(min = 2, max = 50) String name,
                              @QueryParam("age") @PositiveOrZero int age){
         Person p = new Person(name, age);
-
-        people.put(p.id, p);
-
-        return p.id;
+        return em.merge(p).id;
     }
 
     @POST
     @Path("/{personId}")
     public void updatePerson(@PathParam("personId") long id, @Valid Person p) {
-        people.put(id, p);
+        em.merge(p);
     }
 
     @DELETE
     @Path("/{personId}")
     public void removePerson(@PathParam("personId") long id) {
-        people.remove(id);
+        Person p = getPerson(id);
+        em.remove(p);
     }
 }

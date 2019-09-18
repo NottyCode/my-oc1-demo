@@ -9,9 +9,11 @@ import java.util.Collection;
 
 import javax.inject.Inject;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.microshed.testing.jupiter.MicroShedTest;
 import org.microshed.testing.testcontainers.MicroProfileApplication;
+import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 
 import my.demo.Person;
@@ -21,16 +23,33 @@ import my.demo.PersonService;
 public class PersonServiceIT {
     
     @Container
+    public static PostgreSQLContainer<?> db = new PostgreSQLContainer<>()
+        .withDatabaseName("testdb")
+        .withNetworkAliases("postgres")
+        .withUsername("testuser")
+        .withPassword("testpass")
+        .withExposedPorts(5432);
+    
+    @Container
     public static MicroProfileApplication app = new MicroProfileApplication()
-                    .withAppContextRoot("/");
+                    .withAppContextRoot("/")
+                    .withEnv("PG_HOST", "postgres")
+                    .withEnv("PG_PORT", "" + PostgreSQLContainer.POSTGRESQL_PORT)
+                    .withEnv("PG_USER", db.getUsername())
+                    .withEnv("PG_PASS", db.getPassword())
+                    .withEnv("PG_DBNAME", db.getDatabaseName());
+
     
     @Inject
     public static PersonService personSvc;
     
     @Test
     public void testGetPerson() throws Exception {
+        System.out.println(personSvc);
         Long bobId = personSvc.createPerson("Bob", 24);
+        System.out.println(bobId);
         Person bob = personSvc.getPerson(bobId);
+        System.out.println(bob);
         assertNotNull(bob, "Person should exist");
         assertEquals("Bob", bob.name);
         assertEquals(24, bob.age);

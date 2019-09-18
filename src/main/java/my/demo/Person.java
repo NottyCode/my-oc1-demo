@@ -5,36 +5,41 @@ import java.util.Random;
 
 import javax.json.bind.annotation.JsonbCreator;
 import javax.json.bind.annotation.JsonbProperty;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PositiveOrZero;
 import javax.validation.constraints.Size;
 
+@Entity
 public class Person {
 
-    private static final Random r = new Random();
-
-    @NotNull
-    public final long id;
+    @NotNull @Id @GeneratedValue(strategy = GenerationType.AUTO)
+    public long id;
 
     @NotNull
     @Size(min = 2, max = 50)
-    public final String name;
+    public String name;
 
     @NotNull
     @PositiveOrZero
-    public final int age;
+    public int age;
+
+    public Person() {  }
 
     public Person(String name, int age) {
-        this(name, age, null);
+        this.name = name;
+        this.age = age;
     }
 
     @JsonbCreator
     public Person(@JsonbProperty("name") String name,
-            @JsonbProperty("age") int age,
-            @JsonbProperty("id") Long id) {
+            @JsonbProperty("age") int age, @JsonbProperty("id") long id) {
         this.name = name;
         this.age = age;
-        this.id = id == null ? r.nextLong() : id;
+        this.id = id;
     }
 
     @Override
